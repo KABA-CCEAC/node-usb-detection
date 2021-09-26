@@ -1,0 +1,65 @@
+name: 'ci'
+
+on: ['push', 'pull_request']
+
+jobs:
+  check:
+    name: 'Check code'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node.js ${{ matrix.arch }}'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 'Install depedendencies'
+        run: npm ci
+
+      - name: 'Lint'
+        run: npm run lint
+
+  build:
+    name: 'Build binaries on ${{ matrix.os }} ${{ matrix.arch }}'
+    needs: [check]
+    runs-on: ${{ matrix.os }}-latest
+
+    strategy:
+      matrix:
+        os: [Ubuntu, Windows, macOS]
+        arch: [x64, x86]
+      exclude:
+        - os: macOS
+          arch: x86
+
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node.js ${{ matrix.arch }}'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          architecture: ${{ matrix.arch }}
+
+      - name: 'Install Linux x64 dependencies'
+        if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x64' }}
+        run: sudo apt-get install libudev-dev
+
+      - name: 'Install Linux x86 dependencies'
+        if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x86' }}
+        run: sudo apt-get install libudev-dev:i386
+
+      - name: 'Install Node.js dependencies'
+        run: npm ci --build-from-source
+
+      - name: 'Build binaries'
+        run: npm run  prebuild
+
+      - name: 'Upload build artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-usb-detection-prebuilds
+          path: prebuilds
