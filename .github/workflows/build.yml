@@ -4,7 +4,7 @@ on: ['push', 'pull_request']
 
 jobs:
   check:
-    name: 'Check code'
+    name: 'Check JavaScript code'
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +17,7 @@ jobs:
           node-version: '14'
 
       - name: 'Install depedendencies'
-        run: |
-          sudo apt-get update
-          sudo apt-get install libudev-dev
-          npm ci
+        run: npm ci --ignore-scripts
 
       - name: 'Lint'
         run: npm run lint
@@ -62,7 +59,7 @@ jobs:
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v2
         with:
-          name: prebuilds-${{ matrix.os }}-${{ matrix-arch }}
+          name: prebuilds-${{ matrix.os }}-${{ matrix.arch }}
           path: prebuilds
 
   publish:
@@ -81,10 +78,7 @@ jobs:
           node-version: '14'
 
       - name: 'Install depedendencies'
-        run: |
-          sudo apt-get update
-          sudo apt-get install libudev-dev
-          npm ci
+        run: npm ci --ignore-scripts
 
       - name: 'Download prebuilt artifacts'
         uses: actions/download-artifact@v2
