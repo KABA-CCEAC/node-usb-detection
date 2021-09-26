@@ -1,29 +1,10 @@
 name: 'ci'
 
-on: ['push', 'pull_request']
+on: [push, pull_request]
 
 jobs:
-  check:
-    name: 'Check JavaScript code'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 'Checkout repository'
-        uses: actions/checkout@v2
-
-      - name: 'Install Node.js'
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: 'Install depedendencies without building'
-        run: npm ci --ignore-scripts
-
-      - name: 'Lint'
-        run: npm run lint
-
   build:
-    name: 'Build binaries on ${{ matrix.os }} ${{ matrix.arch }}'
+    name: 'Build on Node v${{ matrix.node }} ${{ matrix.os }} ${{ matrix.arch }}'
     runs-on: ${{ matrix.os }}-latest
 
     strategy:
@@ -49,7 +30,7 @@ jobs:
       - name: 'Install Node.js ${{ matrix.arch }}'
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node }}
           architecture: ${{ matrix.arch }}
 
       - name: 'Install Linux dependencies'
@@ -78,6 +59,25 @@ jobs:
         with:
           name: prebuilds-${{ matrix.os }}-${{ matrix.arch }}
           path: prebuilds
+
+  check:
+    name: 'Check JavaScript code'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 'Install depedendencies without building'
+        run: npm ci --ignore-scripts
+
+      - name: 'Lint'
+        run: npm run lint
 
   publish:
     name: 'Publish release'

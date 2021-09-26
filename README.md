@@ -215,12 +215,9 @@ $ npm run rebuild --debug
 
 # Development (compile from source)
 
-This assumes you also have everything on your system necessary to compile ANY native module for Node.js. This may not be the case, though, so please ensure the following requirements are satisfied before filing an issue about "does not install".
+This assumes you also have everything on your system necessary to compile ANY native module for Node.js using [node-gyp](https://github.com/nodejs/node-gyp). This may not be the case, though, so please ensure the following requirements are satisfied before filing an issue about "does not install".
 
-On all systems, please ensure:
-
-- You have [Node.js v14 installed](https://nodejs.org)
-- You have a working setup for [node-gyp](https://github.com/nodejs/node-gyp)
+If you are developing locally, you should use [Node.js v14](https://nodejs.org), but if you are just trying to install usb-detection, you should be able to compile from source using any supported version of Node.
 
 ### Windows
 
