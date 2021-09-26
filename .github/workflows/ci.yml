@@ -53,6 +53,11 @@ jobs:
       - name: 'Install dependencies and build from source'
         run: npm ci --build-from-source
 
+      # TODO: Tests are disabled until we have tests which are
+      # suitable for CI and don't require manual interaction.
+      - name: 'Test'
+        run: echo "Skipping tests on CI, as they currently require manual interaction."
+
       - name: 'Build binaries for all ABIs'
         run: npm run prebuild
 
@@ -85,7 +90,7 @@ jobs:
         with:
           path: prebuilds
 
-      # TODO
+      # TODO: publish from CI
       # - name: 'Publish to npm'
       #   run: npm publish
       #   env:
