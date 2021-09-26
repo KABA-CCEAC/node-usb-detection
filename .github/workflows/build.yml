@@ -32,9 +32,9 @@ jobs:
     strategy:
       matrix:
         os: [Ubuntu, Windows, macOS]
-        arch: [x64, x86]
-        exclude:
-          - os: macOS
+        arch: [x64]
+        include:
+          - os: Windows
             arch: x86
 
     steps:
@@ -47,17 +47,11 @@ jobs:
           node-version: '14'
           architecture: ${{ matrix.arch }}
 
-      - name: 'Install Linux x64 dependencies'
-        if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x64' }}
+      - name: 'Install Linux dependencies'
+        if: ${{ matrix.os == 'Ubuntu' }}
         run: |
           sudo apt-get update
           sudo apt-get install libudev-dev
-
-      - name: 'Install Linux x86 dependencies'
-        if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x86' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install libudev-dev:i386
 
       - name: 'Install Node.js dependencies'
         run: npm ci --build-from-source
