@@ -6,11 +6,12 @@ jobs:
   check:
     name: 'Check code'
     runs-on: ubuntu-latest
+
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v2
 
-      - name: 'Install Node.js ${{ matrix.arch }}'
+      - name: 'Install Node.js'
         uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -26,7 +27,6 @@ jobs:
 
   build:
     name: 'Build binaries on ${{ matrix.os }} ${{ matrix.arch }}'
-    needs: [check]
     runs-on: ${{ matrix.os }}-latest
 
     strategy:
@@ -59,6 +59,38 @@ jobs:
       - name: 'Build binaries'
         run: npm run prebuild
 
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: prebuilds-${{ matrix.os }}-${{ matrix-arch }}
+          path: prebuilds
+
+  publish:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    name: 'Publish release'
+    needs: [check, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v2
+
+      - name: 'Install Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 'Install depedendencies'
+        run: |
+          sudo apt-get update
+          sudo apt-get install libudev-dev
+          npm ci
+
+      - name: 'Download prebuilt artifacts'
+        uses: actions/download-artifact@v2
+        with:
+          path: prebuilds
+
       - name: 'Upload build artifacts to release'
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run: npm run prebuild-upload -- -u "${{ secrets.GH_TOKEN }}"
+        run: npm run prebuild-upload -- -u "${{ secrets.GITHUB_TOKEN }}"
