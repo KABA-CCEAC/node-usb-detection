@@ -30,9 +30,9 @@ jobs:
       matrix:
         os: [Ubuntu, Windows, macOS]
         arch: [x64, x86]
-      exclude:
-        - os: macOS
-          arch: x86
+        exclude:
+          - os: macOS
+            arch: x86
 
     steps:
       - name: 'Checkout repository'
