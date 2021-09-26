@@ -16,7 +16,10 @@ jobs:
           node-version: '14'
 
       - name: 'Install depedendencies'
-        run: npm ci
+        run: |
+          sudo apt-get update
+          sudo apt-get install libudev-dev
+          npm ci
 
       - name: 'Lint'
         run: npm run lint
@@ -46,11 +49,15 @@ jobs:
 
       - name: 'Install Linux x64 dependencies'
         if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x64' }}
-        run: sudo apt-get install libudev-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install libudev-dev
 
       - name: 'Install Linux x86 dependencies'
         if: ${{ matrix.os == 'Ubuntu' && matrix.arch == 'x86' }}
-        run: sudo apt-get install libudev-dev:i386
+        run: |
+          sudo apt-get update
+          sudo apt-get install libudev-dev:i386
 
       - name: 'Install Node.js dependencies'
         run: npm ci --build-from-source
