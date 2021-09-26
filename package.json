@@ -1,5 +1,5 @@
 {
-  "name": "usb-detection",
+  "name": "@mcous/usb-detection",
   "version": "4.11.0",
   "description": "Listen to USB devices and detect changes on them.",
   "main": "index.js",
@@ -13,11 +13,12 @@
     "validate": "npm run lint && npm test",
     "test": "jasmine ./test/test.js",
     "prebuild": "prebuild --all --strip --verbose",
+    "prebuild-upload": "prebuild --upload-all",
     "rebuild": "node-gyp rebuild"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/MadLittleMods/node-usb-detection.git"
+    "url": "git://github.com/mcous/node-usb-detection.git"
   },
   "keywords": [
     "usb",

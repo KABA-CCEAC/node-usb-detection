@@ -57,10 +57,8 @@ jobs:
         run: npm ci --build-from-source
 
       - name: 'Build binaries'
-        run: npm run  prebuild
+        run: npm run prebuild
 
-      - name: 'Upload build artifacts'
-        uses: actions/upload-artifact@v2
-        with:
-          name: node-usb-detection-prebuilds
-          path: prebuilds
+      - name: 'Upload build artifacts to release'
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: npm run prebuild-upload -- -u "${{ secrets.GH_TOKEN }}"
