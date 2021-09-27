@@ -27,7 +27,7 @@ jobs:
       - name: 'Checkout repository'
         uses: actions/checkout@v2
 
-      - name: 'Install Node.js ${{ matrix.arch }}'
+      - name: 'Install Node.js v${{ matrix.node }} ${{ matrix.arch }}'
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
