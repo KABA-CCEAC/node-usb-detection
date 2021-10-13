@@ -73,7 +73,7 @@ jobs:
         with:
           node-version: '14'
 
-      - name: 'Install depedendencies without building'
+      - name: 'Install dependencies without building'
         run: npm ci --ignore-scripts
 
       - name: 'Lint'
@@ -89,12 +89,13 @@ jobs:
       - name: 'Checkout repository'
         uses: actions/checkout@v2
 
-      - name: 'Install Node.js'
+      - name: 'Install Node.js with registry configured for publish'
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: 'Install depedendencies without building'
+      - name: 'Install dependencies without building'
         run: npm ci --ignore-scripts
 
       - name: 'Download prebuilt binaries'
@@ -102,11 +103,10 @@ jobs:
         with:
           path: prebuilds
 
-      # TODO: publish from CI
-      # - name: 'Publish to npm'
-      #   run: npm publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: 'Publish to npm'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: 'Upload prebuilt artifacts to GitHub release'
         run: npm run prebuild-upload -- ${{ secrets.GITHUB_TOKEN }}

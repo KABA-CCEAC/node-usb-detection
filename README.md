@@ -231,6 +231,10 @@ See [node-gyp's macOS installation instructions](https://github.com/nodejs/node-
 
 You know what you need for you system, basically your appropriate analog of build-essential. Keep rocking! See [node-gyp's Unix installation instructions](https://github.com/nodejs/node-gyp#on-unix) for more details.
 
+```sh
+sudo apt-get install build-essential
+```
+
 You will also need to install `libudev-dev`.
 
 ```sh
