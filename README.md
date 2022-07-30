@@ -6,6 +6,13 @@
 `usb-detection` allows you to listen for insert/remove events of USB devices on your system.
 
 
+## Deprecated
+
+This library is now deprecated. We recommend using [`usb`](https://github.com/node-usb/node-usb#migrating-from-node-usb-detection) for hotplug detection instead. It supports a wider range of platforms, using a more proven codebase. 
+
+For help migrating, refer to the [documentation for `usb`](https://github.com/node-usb/node-usb#migrating-from-node-usb-detection)
+
+
 ### [Changelog](https://github.com/MadLittleMods/node-usb-detection/blob/master/CHANGELOG.md)
 
 
